@@ -1,3 +1,6 @@
+using E_Commerce_Web_application.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace E_Commerce_Web_application
 {
     public class Program
@@ -8,6 +11,11 @@ namespace E_Commerce_Web_application
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            // add services database
+            builder.Services.AddDbContext<ApplicationDbContext>(option =>
+            {
+                option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
 
             var app = builder.Build();
 
@@ -27,7 +35,7 @@ namespace E_Commerce_Web_application
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
+                pattern: "{Area=Customer}/{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
 
             app.Run();
